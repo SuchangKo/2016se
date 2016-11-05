@@ -7,18 +7,20 @@
 #include "clean.h"
 #include "state.h"
 
-
 int main(){
-	btn_ctx btn_on;
-	btn_ctx btn_off;
+	btn_ctx btn_hot;
+	btn_ctx btn_cold;
 	btn_ctx btn_extract;
-	btn_ctx btn_concentration;
 	btn_ctx btn_supply;
+	btn_ctx btn_concentration;
 	btn_ctx btn_reservation_clean;
 	btn_ctx btn_reservation_extract;
 	btn_ctx btn_reservation_cancel;
 	btn_ctx btn_clean;
-	
+
+	btn_ctx btn_on;
+	btn_ctx btn_off;
+
 	btn_init(&btn_on, 'o');
 	btn_init(&btn_off, 'f');
 	btn_init(&btn_extract, 'e');
@@ -46,15 +48,15 @@ int main(){
 	sensor_init(&sensor_cold_temperature, -100, 100);
 	
 	while(1){
-		if(state==0){
-			WAITING();
-			GRINDING();
-			EXTRACTING();
-			RESERVING();
-			CLEANING();
-			SUPPLYING();
-			RESERVED();
-		}
+		btns_update();
+		
+		waiting_tick(state);
+		grinding_tick();
+		extract_tick();
+		reserve_tick();
+		clean_tick();
+		supply_tick();
+		reserved_tick();
 		sleep(1);
 	}
 }

@@ -1,7 +1,25 @@
 #include "extract.h"
 
+#define On 1
+#define Off 0
+#define Solenoid_Command(int flag) (solenoid_flag = flag)
+int solenoid_flag = 0;
+int solenoid_timer = 0;
+
+struct solenoid {
+	int element;
+	float quantity; 
+};
+
+
 void EXTRACTING()
 {
+	if(btn['extract'] == 1){
+		0 
+		time = 0;
+		soleoid during
+
+	}
 	if(sensor_get(&sensor_coffee_powder_weight) < 10)
 	{
 		state = GRINDING;
@@ -21,15 +39,20 @@ void EXTRACTING()
 			{
 				Solenoid_Command(On);
 				//Delay By Button Data[Concentration]
-				Solenoid_Command(Off);
-				Put_Hot_Water;
 			}else if(button_data(&btn_temperature) == Cold){
 				Solenoid_Command(On);
 				//Delay By Button Data[Concentration]
-				Solenoid_Command(Off);
-				Put_Cold_Water;
 			}
-			//State WAITING
 		}
-	}	
+	}
+	if(solenoid_flag == 1)
+	{
+		if(solenoid_timer >= solenoid.quantity) //Target_time Setting
+		{
+			Solenoid_Command(Off);
+		}else{
+			solenoid_timer++;
+		}
+	}
+	
 }

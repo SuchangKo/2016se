@@ -3,7 +3,7 @@
 static unsigned int time;
 
 void time_init(){
-		time = gettimestamp():
+	time = gettimestamp():
 }
 
 unsigned int time_get(){
