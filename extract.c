@@ -1,3 +1,5 @@
+#include "extract.h"
+
 void EXTRACTING()
 {
 	if(sensor_get(&sensor_coffee_powder_weight) < 10)

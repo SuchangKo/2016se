@@ -1,3 +1,5 @@
+#include "clean.h"
+
 void CLEANING()
 {
 	if(state == CLEANING){

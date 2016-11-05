@@ -1,110 +1,72 @@
+#include "button.h"
+#include "sensor.h"
+#include "time.h"
+
 #include "grind.h"
 #include "extract.h"
 #include "clean.h"
 
-int main(){}
 
-int load_data(){}
+int main(){
+	btn_ctx btn_on;
+	btn_ctx btn_off;
+	btn_ctx btn_extract;
+	btn_ctx btn_concentration;
+	btn_ctx btn_supply;
+	btn_ctx btn_reservation_clean;
+	btn_ctx btn_reservation_extract;
+	btn_ctx btn_reservation_cancel;
+	btn_ctx btn_clean;
+	
+	btn_init(&btn_on, 'o');
+	btn_init(&btn_off, 'f');
+	btn_init(&btn_extract, 'e');
+	btn_init(&btn_concentration, 'c');
+	btn_init(&btn_supply, 's');
+	btn_init(&btn_reservation_clean, 'l');
+	btn_init(&btn_reservation_extract, 't');
+	btn_init(&btn_reservation_cancel, 'a');
+	btn_init(&btn_clean, 'n');
+	
+	sensor_ctx sensor_hot_weight;
+	sensor_ctx sensor_cold_weight;
+	sensor_ctx sensor_cup_existence;
+	sensor_ctx sensor_coffee_bean_weight;
+	sensor_ctx sensor_coffee_powder_weight;
+	sensor_ctx sensor_hot_temperature;
+	sensor_ctx sensor_cold_temperature;
+	
+	sensor_init(&sensor_hot_weight, “hot_weight.txt”, 0, 500);
+	sensor_init(&sensor_cold_weight, “cold_weight.txt”, 0, 500);
+	sensor_init(&sensor_cup_existence, “cup_existence.txt”, 0, 1);
+	sensor_init(&sensor_coffee_bean_weight, “coffee_bean_weight”, 0, 100);
+	sensor_init(&sensor_coffee_powder_weight, “coffee_powder_weight”, 0, 100);
+	sensor_init(&sensor_hot_temperature, -100, 100);
+	sensor_init(&sensor_cold_temperature, -100, 100);
+	
+	while(1){
+		if(state==0){
+			WAITING();
+			GRINDING();
+			EXTRACTING();
+			RESERVING();
+			CLEANING();
+			SUPPLYING();
+			RESERVED();
+		}
+		sleep(1);
+	}
+}
 
 int sensor_init(){}
 
-struct btn_ctx{
-	char key;
-	char pressed=1;
-};
-
-struct btn_ctx on;
-on.key= 'q';
-struct btn_ctx off;
-off.key = 'w';
-
-/*
-int verify_key{
-	on.pressed ?=1
-	off.pressed ?=1
-	..
-	sleep(3);
-}
-*/
-
-///////////////////////////////////////////////////
-
-void btns_update(){
-	getc(c)
-	if(c == on.key){
-		btn_press(&on)
-	}
-	else if(c == off.key){
-		btn_press(&off)
-	}
-	...
-}
-
-void btn_release(struct btn_ctx *c){
-	c->pressed=0;
-}
-
-void btn_press(struct btn_ctx *c){
-	c->pressed=1;
-}
-
-int btn_is_pressed(struct btn_ctx *c){
-	return c->pressed;
-}
 
 
 ////////////////////////////////////////////////////
 
 
 
-struct sensor_ctx{
-	char filename[261];
-	int min;
-	int max;
-};
 
-int sensor_get(struct sensor_ctx *c){
-	//sensor data get
-	FILE *f;
-	int ret;
-	f=fopen(c -> filename, "rb");
-	fscanf(f, "%d", &ret);
-	fclose(f);
-	return ret;
-}
-
-void sensor_update(struct sensor_ctx *c, int data){
-	//coffee fill, water fill, etc
-	FILE *f;
-	f=fopen(c->filename, "wb");
-	fprintf(f, "%d", data);
-	fclose(f);
-}
-
-int sensor_add(struct sensor_ctx *c, int amount){
-	//sub amount
-	FILE *f;
-	int old, new;
-	f=fopen(c->filename, "wb+");
-	fscanf(f, "%d", &old);
-	fseek(f, 0, SEEK_SET);
-	ftruncate(fileno(f), 0);
-	new = max(c->min, min(c->max, old+amount));
-	fprintf(f, "%d", new);
-	fclose(f);
-	return (new - old) == amount; //return 1 if success / 0 if not
-}
-
-int sensor_sub(struct sensor_ctx *c, int amount){
-	//sub amount
-	return sensor_add(c, -amount); //return 1 if success / 0 if not
-}
-
-void sensor_init(struct sensor_ctx *c, char *filename, int min=0x80000000, int max=0x7fffffff){
-	strcpy(c->filename, filename);
-	c->min=min;
-	c->max=max;
-}
 
 ///////////////////////////////////////////////////////////////////////
 
