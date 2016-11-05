@@ -12,7 +12,7 @@
 
 void draw_main(WINDOW *win, const char *current_time, const char *current_state, const char *concentration, const char *temperature, const char *water_remains, const char *coffee_remains, const char *powder_exists, const char *needs_cleaning, const char *coffee_time, const char *clean_time) {
     wresize(win, 12, 40);
-    wclear(win);
+    werase(win);
     box(win, '|', '-');
 
     mvwprintw(win, 1, 2, "현재 시간"); 
@@ -57,7 +57,7 @@ void draw_main(WINDOW *win, const char *current_time, const char *current_state,
 
 void draw_select_supply_type(WINDOW *win, const char *buf) {
     wresize(win, 9, 20);
-    wclear(win);
+    werase(win);
     box(win, '|', '-');
     
     mvwprintw(win, 1, 2, "재료 선택");
@@ -80,7 +80,7 @@ void draw_select_supply_type(WINDOW *win, const char *buf) {
 
 void draw_select_supply_amount(WINDOW *win, const char *type, const char *buf) {
     wresize(win, 5, 20);
-    wclear(win);
+    werase(win);
     box(win, '|', '-');
     
     mvwprintw(win, 1, 2, "%s 투입량:", type);
@@ -93,7 +93,7 @@ void draw_select_supply_amount(WINDOW *win, const char *type, const char *buf) {
 
 void draw_select_time(WINDOW *win, const char *buf) {
     wresize(win, 5, 20);
-    wclear(win);
+    werase(win);
     box(win, '|', '-');
     
     mvwprintw(win, 1, 2, "시간 입력:");
@@ -106,7 +106,7 @@ void draw_select_time(WINDOW *win, const char *buf) {
 
 void draw_warning(WINDOW *win, const char *msg, int beep_count) {
     wresize(win, 5, 40);
-    wclear(win);
+    werase(win);
     box(win, '|', '-');
     
     mvwprintw(win, 1, 2, "경고");
@@ -122,7 +122,7 @@ void draw_warning(WINDOW *win, const char *msg, int beep_count) {
 
 void draw_commands(WINDOW *win) {
     wresize(win, 12, 30);
-    wclear(win);
+    werase(win);
     box(win, '|', '-');
     
     mvwprintw(win, 1, 2, "q | %s", "종료");
@@ -142,7 +142,7 @@ void draw_commands(WINDOW *win) {
 void draw_test(WINDOW *win) {
     static int x = 0;
     wresize(win, 4, 80);
-    wclear(win);
+    werase(win);
     box(win, '|', '-');
 
     mvwprintw(win, 1, 1, "%d", x++);
@@ -154,23 +154,24 @@ void draw_test(WINDOW *win) {
 WINDOW *win = NULL;
 WINDOW *win_commands = NULL;
 
-char buf[256] = {};
-char allowed_charset[] = "0123456789:";
+char input_buf[256] = {};
+char allowed_charset[256] = "0123456789:";
 
 int feedback_init() {
     setlocale(LC_ALL, "ko_KR.utf-8");
     initscr();
-    raw();
     curs_set(0);
     nodelay(stdscr, TRUE);
     noecho();
 
     win = newwin(0, 0, 0, 0);
     win_commands = newwin(0, 0, 0, 0);
+    return 0;
 }
 
 int feedback_fini() {
     endwin();
+    return 0;
 }
 
 int test_feedback_main(int argc, char *argv[])
@@ -179,7 +180,7 @@ int test_feedback_main(int argc, char *argv[])
 
     while(1) {
         //draw_main(win, "17:00", "대기중", "진하게", "온", "1000ml", "100g", "O", "X", "12:19", "--:--");
-        draw_select_supply_type(win, buf);
+        draw_select_supply_type(win, input_buf);
         //draw_select_supply_amount(win, "원두", buf);
         //draw_select_time(win, buf);
         //draw_warning(win, "물부족 (잔량 37ml)", 2);
@@ -194,13 +195,13 @@ int test_feedback_main(int argc, char *argv[])
         if(ch == 'q') {
             break;
         } else if(strchr(allowed_charset, ch)) {
-            int end = strlen(buf);
-            buf[end++] = ch;
-            buf[end] = '\0';
+            int end = strlen(input_buf);
+            input_buf[end++] = ch;
+            input_buf[end] = '\0';
         } else if(ch == '\n') {
-            buf[0] = '\0';
+            input_buf[0] = '\0';
         } else if(ch == 0x7f) {
-            buf[max(0, strlen(buf) - 1)] = '\0';
+            input_buf[max(0, strlen(input_buf) - 1)] = '\0';
         }
     }
 
@@ -208,6 +209,3 @@ int test_feedback_main(int argc, char *argv[])
     return 0;
 }
 
-int main() {
-    test_feedback_main(0,NULL);
-}

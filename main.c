@@ -9,10 +9,14 @@
 #include "wait.h"
 #include "reservation.h"
 #include "supply.h"
+#include "feedback.h"
 
 #include <unistd.h> //sleep
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
+
+#define max(a, b) a > b ? a : b
 
 struct btn_ctx btn_temperature; //hot & cold
 struct btn_ctx btn_extract;
@@ -36,6 +40,9 @@ struct sensor_ctx sensor_cold_temperature;
 int power_flag;
 int state = 0;
 int concentration = 1; //concentration = 1,2,3
+
+extern char input_buf[];
+extern char allowed_charset[];
 
 int main() {
 	power_flag = 1;
@@ -61,12 +68,13 @@ int main() {
 	sensor_init(&sensor_cold_temperature, "coffee_water_cold_temperature.txt", -100,
 			100);
 
+        feedback_init();
+
 	while (1) {
-		print_state();
+                print_state();
 		btns_update();
-		
+	
 		if(power_flag){
-			printf("[Working]\n");
 			wait_tick(state);
 			grind_tick(state);
 			extract_tick(state);
@@ -74,9 +82,38 @@ int main() {
 			clean_tick(state);
 			supply_tick(state);
 			reserved_tick(state);	
-		}else{
-			printf("[NOT Working]\n");
 		}
-		sleep(1);
+
+                char ch = getch();
+                mvwprintw(stdscr, 52, 0, "%d %d", ch, '\b'); // test
+
+                if(ch == 'q') {
+                    break;
+                } else if(strchr(allowed_charset, ch)) {
+                    int end = strlen(input_buf);
+                    input_buf[end++] = ch;
+                    input_buf[end] = '\0';
+                } else if(ch == '\n') {
+                    if(state == STATE_SUPPLY) {
+                        if(supply_type == 0) {
+                            supply_type = input_buf[0] - 0x30;
+         
+                            // invalid input
+                            if(!(1 <= supply_type && supply_type <= 3)) {
+                                supply_type = 0;
+                            }
+                        } else if(supply_amount == 0) {
+                            supply_amount = atoi(input_buf);
+                        }
+                    }
+
+                    input_buf[0] = '\0';
+                    werase(stdscr);
+                } else if(ch == 0x7f) {
+                    input_buf[max(0, strlen(input_buf) - 1)] = '\0';
+                }
 	}
+
+        feedback_fini();
+        return 0;
 }

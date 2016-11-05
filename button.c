@@ -1,5 +1,6 @@
 #include "button.h"
 #include <stdio.h>
+#include <curses.h>
 #include "state_module.h"
 /*
  int verify_key{
@@ -16,9 +17,7 @@ void btn_init(struct btn_ctx *c, char init_c) {
 	c->pressed = 0;
 }
 void btns_update() {
-	char c;
-	c = getc(stdin); //blocking...
-	if(c == 10) c = getc(stdin); //New Line Check
+	char c = getch();
 	if(c == btn_temperature.key){
 		btn_press(&btn_temperature);
 	}else if(c == btn_extract.key){
@@ -37,7 +36,9 @@ void btns_update() {
 		btn_press(&btn_clean);
 	}else if(c == btn_onoff.key){
 		btn_press(&btn_onoff);
-	}
+	} else {
+            ungetch(c);
+        }
 	state_process();
 	/*
 	if (c == btn_on.key) {
