@@ -32,12 +32,14 @@ struct sensor_ctx sensor_coffee_bean_weight;
 struct sensor_ctx sensor_coffee_powder_weight;
 struct sensor_ctx sensor_hot_temperature;
 struct sensor_ctx sensor_cold_temperature;
+struct sensor_ctx sensor_use_count;
 
 int power_flag;
 int state = 0;
 int concentration = 1; //concentration = 1,2,3
 
 int main() {
+	time_init();
 	power_flag = 1;
 	
 	//now_state = 1;
@@ -60,11 +62,17 @@ int main() {
 			100);
 	sensor_init(&sensor_cold_temperature, "coffee_water_cold_temperature.txt", -100,
 			100);
+	sensor_init(&sensor_use_count,"sensor_count.txt",0,10);
+	
+
+	int timer = -1;
 
 	while (1) {
+
+
 		print_state();
 		btns_update();
-		
+
 		if(power_flag){
 			printf("[Working]\n");
 			wait_tick(state);

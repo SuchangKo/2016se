@@ -16,6 +16,7 @@ extern struct sensor_ctx sensor_coffee_bean_weight;
 extern struct sensor_ctx sensor_coffee_powder_weight;
 extern struct sensor_ctx sensor_hot_temperature;
 extern struct sensor_ctx sensor_cold_temperature;
+extern struct sensor_ctx sensor_use_count;
 
 
 int sensor_get(struct sensor_ctx *c);

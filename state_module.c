@@ -36,8 +36,9 @@ void print_state(){
 }
 
 void state_process(){
+
 	if(btn_is_pressed(&btn_temperature)){
-		btn_release(&btn_temperature);
+		//Nothing to do
 	}else if(btn_is_pressed(&btn_extract)){
 		state = STATE_EXTRACT;
 		btn_release(&btn_extract);
@@ -47,13 +48,16 @@ void state_process(){
 	}else if(btn_is_pressed(&btn_concentration)){
 		btn_release(&btn_concentration);
 	}else if(btn_is_pressed(&btn_reservation_clean)){
-		state = STATE_RESERVE;
+		if(state == STATE_WAIT)
+			state = STATE_RESERVE; //use RESERVED_ACTION
 		btn_release(&btn_reservation_clean);
 	}else if(btn_is_pressed(&btn_reservation_extract)){
-		state = STATE_RESERVE;
+		if(state == STATE_WAIT)
+			state = STATE_RESERVE; //use RESERVED_ACTION
 		btn_release(&btn_reservation_extract);
 	}else if(btn_is_pressed(&btn_reservation_cancel)){
-		state = STATE_RESERVE;
+		if(state == STATE_WAIT)
+			state = STATE_RESERVE; //use RESERVED_ACTION
 		btn_release(&btn_reservation_cancel);
 	}else if(btn_is_pressed(&btn_clean)){
 		state = STATE_CLEAN;
@@ -65,5 +69,5 @@ void state_process(){
 }
 
 void new_state(int state_n){
-
+	state = state_n;
 }

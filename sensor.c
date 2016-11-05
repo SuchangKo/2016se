@@ -2,9 +2,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <string.h>
-
-#define min(a, b) (((a) < (b)) ? (a) : (b))
-#define max(a, b) (((a) > (b)) ? (a) : (b))
+#include <math.h>
 
 int sensor_get(struct sensor_ctx *c){
 	//sensor data get
@@ -25,14 +23,19 @@ void sensor_update(struct sensor_ctx *c, int data){
 }
 
 int sensor_add(struct sensor_ctx *c, int amount){
+	FILE *fp;
+	int old, new;
+	fp = fopen(c->filename,"rb");
+	fscanf(fp,"%d",&old);
+	fclose(fp);
+
 	//sub amount
 	FILE *f;
-	int old, new;
+	
 	f=fopen(c->filename, "wb+");
-	fscanf(f, "%d", &old);
 	fseek(f, 0, SEEK_SET);
 	ftruncate(fileno(f), 0);
-	new = max(c->min, min(c->max, old+amount));
+	new = fmax(c->min, fmin(c->max, old+amount));
 	fprintf(f, "%d", new);
 	fclose(f);
 	return (new - old) == amount; //return 1 if success / 0 if not
