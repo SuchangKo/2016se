@@ -23,6 +23,9 @@ extern struct btn_ctx btn_clean;
 extern struct btn_ctx btn_onoff;
 extern int state;
 
+extern int supply_type;
+extern int supply_amount;
+
 void state_process();
 
 void new_state(int state_n);
