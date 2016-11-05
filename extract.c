@@ -1,11 +1,10 @@
 void EXTRACTING()
 {
-	if(state == EXTRACTING && sensor_get(&sensor_coffee_powder_weight) < 10)
+	if(sensor_get(&sensor_coffee_powder_weight) < 10)
 	{
 		state = GRINDING;
-
 	}
-	else if(state == EXTRACTING && sensor_get(&sensor_coffee_powder_weight) >= 10){
+	else if(sensor_get(&sensor_coffee_powder_weight) >= 10){
 	{	
 		if(sensor_get(&sensor_water) < 300 || sensor_get(&sensor_cup_existence) == false || Count >= 10) //new sensor_water
 		{

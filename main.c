@@ -31,10 +31,10 @@ int verify_key{
 
 void btns_update(){
 	getc(c)
-	if(c==on.key){
+	if(c == on.key){
 		btn_press(&on)
 	}
-	else if(c==off.key){
+	else if(c == off.key){
 		btn_press(&off)
 	}
 	...
@@ -67,7 +67,7 @@ int sensor_get(struct sensor_ctx *c){
 	//sensor data get
 	FILE *f;
 	int ret;
-	f=fopen(c->filename, "rb");
+	f=fopen(c -> filename, "rb");
 	fscanf(f, "%d", &ret);
 	fclose(f);
 	return ret;
