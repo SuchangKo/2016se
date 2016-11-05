@@ -100,22 +100,6 @@ int main() {
                     int end = strlen(input_buf);
                     input_buf[end++] = ch;
                     input_buf[end] = '\0';
-                } else if(ch == '\n') {
-                    if(state == STATE_SUPPLY) {
-                        if(supply_type == 0) {
-                            supply_type = input_buf[0] - 0x30;
-         
-                            // invalid input
-                            if(!(1 <= supply_type && supply_type <= 3)) {
-                                supply_type = 0;
-                            }
-                        } else if(supply_amount == 0) {
-                            supply_amount = atoi(input_buf);
-                        }
-                    }
-
-                    input_buf[0] = '\0';
-                    werase(stdscr);
                 } else if(ch == 0x7f) {
                     input_buf[max(0, strlen(input_buf) - 1)] = '\0';
                 }

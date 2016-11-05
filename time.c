@@ -13,6 +13,7 @@ unsigned int mytime(){
 
 int mysleep_init(int *id) {
 	*id = -1;
+        return 0;
 }
 
 int mysleep(int *id, int duration) {
