@@ -16,7 +16,7 @@ struct solenoid {
 };
 
 struct solenoid solenoid_data;
-
+int temp_flag = 0; // 0 : hot / 1 : cold
 int timer = -1; // mysleep_init()
 
 void extract_tick(int now_state) {
@@ -26,7 +26,7 @@ void extract_tick(int now_state) {
 			new_state(STATE_GRIND);
 		} else if (sensor_get(&sensor_coffee_powder_weight) >= 10) {
 			{
-				if(btn_is_pressed(&btn_temperature) == 0){ //Hot
+				if(temp_flag == 0){ //Hot
 					if(sensor_get(&sensor_hot_weight) >= 300 && sensor_get(&sensor_cup_existence) == true && Count < 10){
 						printf("NORMAL\n");
 						Solenoid_Command(On);
@@ -35,6 +35,7 @@ void extract_tick(int now_state) {
 							Solenoid_Command(Off);
 							printf("HOT COFFEE\n");
 							new_state(STATE_WAIT);
+							sensor_add(&sensor_use_count,1);
 						}
 						
 						
@@ -52,6 +53,7 @@ void extract_tick(int now_state) {
 							Solenoid_Command(Off);
 							printf("COLD COFFEE\n");
 							new_state(STATE_WAIT);
+							sensor_add(&sensor_use_count,1);
 						}
 							
 					}

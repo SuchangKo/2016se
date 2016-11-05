@@ -38,7 +38,8 @@ void print_state(){
 void state_process(){
 
 	if(btn_is_pressed(&btn_temperature)){
-		//Nothing to do
+		temp_flag = !temp_flag;
+		btn_release(&btn_temperature);
 	}else if(btn_is_pressed(&btn_extract)){
 		state = STATE_EXTRACT;
 		btn_release(&btn_extract);

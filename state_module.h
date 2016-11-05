@@ -10,6 +10,7 @@
 
 extern int state;
 extern int power_flag;
+extern int temp_flag;
 void print_state();
 
 extern struct btn_ctx btn_temperature; //hot & cold

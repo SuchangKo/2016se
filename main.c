@@ -63,6 +63,7 @@ int main() {
 	sensor_init(&sensor_cold_temperature, "coffee_water_cold_temperature.txt", -100,
 			100);
 	sensor_init(&sensor_use_count,"sensor_count.txt",0,10);
+	sensor_update(&sensor_use_count,0);
 	
 
 	int timer = -1;
