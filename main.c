@@ -31,14 +31,6 @@ int main(){
 	btn_init(&btn_reservation_cancel, 'a');
 	btn_init(&btn_clean, 'n');
 	
-	sensor_ctx sensor_hot_weight;
-	sensor_ctx sensor_cold_weight;
-	sensor_ctx sensor_cup_existence;
-	sensor_ctx sensor_coffee_bean_weight;
-	sensor_ctx sensor_coffee_powder_weight;
-	sensor_ctx sensor_hot_temperature;
-	sensor_ctx sensor_cold_temperature;
-	
 	sensor_init(&sensor_hot_weight, “hot_weight.txt”, 0, 500);
 	sensor_init(&sensor_cold_weight, “cold_weight.txt”, 0, 500);
 	sensor_init(&sensor_cup_existence, “cup_existence.txt”, 0, 1);
