@@ -9,6 +9,7 @@ int sensor_get(struct sensor_ctx *c){
 	FILE *f;
 	int ret;
 	f=fopen(c -> filename, "rb");
+        if(f == NULL) return 0;
 	fscanf(f, "%d", &ret);
 	fclose(f);
 	return ret;
@@ -18,6 +19,7 @@ void sensor_update(struct sensor_ctx *c, int data){
 	//coffee fill, water fill, etc
 	FILE *f;
 	f=fopen(c->filename, "wb");
+        if(f == NULL) return;
 	fprintf(f, "%d", data);
 	fclose(f);
 }
@@ -26,6 +28,7 @@ int sensor_add(struct sensor_ctx *c, int amount){
 	FILE *fp;
 	int old, new;
 	fp = fopen(c->filename,"rb");
+        if(fp == NULL) return 0;
 	fscanf(fp,"%d",&old);
 	fclose(fp);
 
@@ -33,6 +36,7 @@ int sensor_add(struct sensor_ctx *c, int amount){
 	FILE *f;
 	
 	f=fopen(c->filename, "wb+");
+        if(f == NULL) return 0;
 	fseek(f, 0, SEEK_SET);
 	ftruncate(fileno(f), 0);
 	new = fmax(c->min, fmin(c->max, old+amount));
