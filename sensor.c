@@ -1,3 +1,9 @@
+#include "sensor.h"
+#include <stdio.h>
+
+#define min(a, b) (((a) < (b)) ? (a) : (b))
+#define max(a, b) (((a) > (b)) ? (a) : (b))
+
 int sensor_get(struct sensor_ctx *c){
 	//sensor data get
 	FILE *f;
@@ -35,7 +41,9 @@ int sensor_sub(struct sensor_ctx *c, int amount){
 	return sensor_add(c, -amount); //return 1 if success / 0 if not
 }
 
-void sensor_init(struct sensor_ctx *c, char *filename, int min=0x80000000, int max=0x7fffffff){
+void sensor_init(struct sensor_ctx *c, char *filename, int min, int max){
+	//min = =0x80000000;
+	//max = =0x7fffffff;
 	strcpy(c->filename, filename);
 	c->min=min;
 	c->max=max;

@@ -1,8 +1,16 @@
 #include "clean.h"
+#include "state.h"
 
-void CLEANING()
+void clean_tick(int now_state)
 {
-	if(state == CLEANING){
-		if(sensor_get(&sensor_coffee_powder_weight) >= 10)
+
+	if(now_state == STATE_CLEAN){
+
 	}
+	/*
+	if(state == STATE_CLEAN)s
+	{
+		//if(sensor_get(&sensor_coffee_powder_weight) >= 10)
+	}
+	*/
 }
