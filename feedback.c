@@ -155,7 +155,7 @@ WINDOW *win = NULL;
 WINDOW *win_commands = NULL;
 
 char input_buf[256] = {};
-char allowed_charset[256] = "0123456789:";
+char allowed_charset[256] = "0123456789:\n";
 
 int feedback_init() {
     setlocale(LC_ALL, "ko_KR.utf-8");
