@@ -1,1 +1,1 @@
-void grinding_tick(int now_state);
+void grind_tick(int now_state);

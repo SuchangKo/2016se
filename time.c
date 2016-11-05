@@ -1,14 +1,12 @@
 #include "time.h"
+#include <time.h>
 
-static unsigned int time;
+static unsigned int st;
 
-unsigned int gettimestamp(){
-	return 0;
-}
 void time_init(){
-	time = gettimestamp();
+	st = time(NULL);
 }
 
 unsigned int time_get(){
-	return (gettimestamp() - time);
+	return time(NULL) - st;
 }

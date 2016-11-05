@@ -1,5 +1,5 @@
 #include "grind.h"
-#include "state.h"
+#include "state_module.h"
 #include "sensor.h"
 
 #define On 1
@@ -22,7 +22,7 @@ struct grind_data{
 };
 */
 
-void grinding_tick(int now_state)
+void grind_tick(int now_state)
 {
 	if(now_state == STATE_GRIND){
 		if (sensor_get(&sensor_coffee_bean_weight) < 10)
