@@ -42,7 +42,7 @@ void print_state(){
 			if(supply_type == 0) {
                             draw_select_supply_type(win, input_buf);
                         } else if(supply_amount == 0) {
-    		   	    draw_select_supply_amount(win, SUPPLY_TYPES[supply_type], input_buf);
+    		   	    draw_select_supply_amount(win, SUPPLY_TYPES[supply_type - 1], input_buf);
                         } else {
 
                         }
