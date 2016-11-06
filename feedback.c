@@ -19,13 +19,20 @@ void draw_main(WINDOW *win, const char *current_time, const char *current_state,
 
     mvwprintw(win, 1, 2, "현재 시간"); 
 
+    /*
     time_t ptime = 1234+60;
     struct tm *tm_info = gmtime(&ptime);
+    */
+    time_t rawtime;
+    struct tm * timeinfo;
+    time ( &rawtime );
+    timeinfo = localtime ( &rawtime );
+
 
     char buf[256];
-    strftime(buf, sizeof(buf), "%H:%M", tm_info);
+    strftime(buf, sizeof(buf), "%H:%M", timeinfo);
 
-    mvwprintw(win, 1, COL_SEP_MAIN, "| %s", current_time); 
+    mvwprintw(win, 1, COL_SEP_MAIN, "| %s", buf); 
 
     mvwprintw(win, 2, 2, "현재 상태");
     mvwprintw(win, 2, COL_SEP_MAIN, "| %s", current_state);
