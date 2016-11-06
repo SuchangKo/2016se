@@ -23,7 +23,7 @@ extern struct btn_ctx btn_reservation_cancel;
 extern struct btn_ctx btn_clean;
 extern struct btn_ctx btn_onoff;
 extern int state;
-
+extern int concentration;
 extern int supply_type;
 extern int supply_amount;
 

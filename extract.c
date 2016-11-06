@@ -3,6 +3,7 @@
 #include "button.h"
 #include "sensor.h"
 #include "time.h"
+#include "feedback.h"
 
 #define On 1
 #define Off 0
@@ -25,16 +26,15 @@ void extract_tick(int now_state) {
 		if (sensor_get(&sensor_coffee_powder_weight) < 10) {
 			new_state(STATE_GRIND);
 		} else if (sensor_get(&sensor_coffee_powder_weight) >= 10) {
-			{
 				if(temp_flag == 0){ //Hot
 					if(sensor_get(&sensor_hot_weight) >= 300 && sensor_get(&sensor_cup_existence) == true && Count < 10){
-						printf("NORMAL\n");
 						Solenoid_Command(On);
 
 						if(mysleep(&timer, 3)) {
 							Solenoid_Command(Off);
-							printf("HOT COFFEE\n");
 							new_state(STATE_WAIT);
+							sensor_sub(&sensor_hot_weight,(concentration+1)*100);
+							sensor_sub(&sensor_coffee_powder_weight,10);
 							sensor_add(&sensor_use_count,1);
 						}
 						
@@ -42,28 +42,36 @@ void extract_tick(int now_state) {
 						
 					}
 					if(sensor_get(&sensor_hot_weight) < 300 || sensor_get(&sensor_cup_existence) == false || Count >= 10){
-						printf("ERROR_HOT\n");
-						new_state(STATE_WAIT);
+                        if(mysleep(&timer, 2)) {
+                                new_state(STATE_WAIT);
+                                error_msg = NULL;
+                        } else {
+                                error_msg = "물(온)이 부족합니다.";
+                        }
 					}
 				}else{ //Cold
 					if(sensor_get(&sensor_cold_weight) >= 300 && sensor_get(&sensor_cup_existence) == true && Count < 10){
-						printf("NORMAL\n");	
 						Solenoid_Command(On);
 						if(mysleep(&timer, 3)) {
 							Solenoid_Command(Off);
-							printf("COLD COFFEE\n");
 							new_state(STATE_WAIT);
+							sensor_sub(&sensor_cold_weight,(concentration+1)*100);
+							sensor_sub(&sensor_coffee_powder_weight,10);
 							sensor_add(&sensor_use_count,1);
 						}
 							
 					}
 					if(sensor_get(&sensor_cold_weight) < 300 || sensor_get(&sensor_cup_existence) == false || Count >= 10){
-						printf("ERROR_COLD\n");	
-						new_state(STATE_WAIT);
+						if(mysleep(&timer, 2)) {
+                                new_state(STATE_WAIT);
+                                error_msg = NULL;
+                        } else {
+                                error_msg = "물(냉)이 부족합니다.";
+                        }
 					}
 
 				}				
-			}
+			
 		}
 	}
 }

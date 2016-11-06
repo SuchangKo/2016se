@@ -2,6 +2,8 @@
 #include "state_module.h"
 #include "sensor.h"
 #include "time.h"
+#include "feedback.h"
+
 #define On 1
 #define Off 0
 #define Solenoid_Command(FLAG) (solenoid_flag = FLAG)
@@ -22,7 +24,12 @@ void grind_tick(int now_state)
 	if(now_state == STATE_GRIND){
 		if (sensor_get(&sensor_coffee_bean_weight) < 10)
 		{
-			printf("Fail");
+			if(mysleep(&grind_timer, 1)) {
+				new_state(STATE_WAIT);
+				error_msg = NULL;
+			} else {
+				error_msg = "원두가 부족합니다.";
+			}
 		}
 		else if(sensor_get(&sensor_coffee_bean_weight) >= 10)
 		{

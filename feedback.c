@@ -10,8 +10,10 @@
 
 #define max(a, b) a > b ? a : b
 
-void draw_main(WINDOW *win, const char *current_time, const char *current_state, const char *concentration, const char *temperature, const char *water_remains, const char *coffee_remains, const char *powder_exists, const char *needs_cleaning, const char *coffee_time, const char *clean_time) {
-    wresize(win, 12, 40);
+char *error_msg = NULL;
+
+void draw_main(WINDOW *win, const char *current_time, const char *current_state, const char *concentration, const char *temperature, const char *cold_water_remains, const char *hot_water_remains, const char *coffee_remains, const char *powder_exists, const char *needs_cleaning, const char *coffee_time, const char *clean_time) {
+    wresize(win, 13, 40);
     werase(win);
     box(win, '|', '-');
 
@@ -34,29 +36,32 @@ void draw_main(WINDOW *win, const char *current_time, const char *current_state,
     mvwprintw(win, 4, 2, "선택 온도");
     mvwprintw(win, 4, COL_SEP_MAIN, "| %s", temperature);
 
-    mvwprintw(win, 5, 2, "물 잔량");
-    mvwprintw(win, 5, COL_SEP_MAIN, "| %s", water_remains);
+    mvwprintw(win, 5, 2, "물(온) 잔량");
+    mvwprintw(win, 5, COL_SEP_MAIN, "| %s", hot_water_remains);
 
-    mvwprintw(win, 6, 2, "커피 잔량 (원두)");
-    mvwprintw(win, 6, COL_SEP_MAIN, "| %s", coffee_remains);
+    mvwprintw(win, 6, 2, "물(냉)잔량");
+    mvwprintw(win, 6, COL_SEP_MAIN, "| %s", cold_water_remains);
 
-    mvwprintw(win, 7, 2, "가루 커피 유무");
-    mvwprintw(win, 7, COL_SEP_MAIN, "| %s", powder_exists);
+    mvwprintw(win, 7, 2, "커피 잔량 (원두)");
+    mvwprintw(win, 7, COL_SEP_MAIN, "| %s", coffee_remains);
 
-    mvwprintw(win, 8, 2, "커피 가루 청소 필요");
-    mvwprintw(win, 8, COL_SEP_MAIN, "| %s", needs_cleaning);
+    mvwprintw(win, 8, 2, "가루 커피 유무");
+    mvwprintw(win, 8, COL_SEP_MAIN, "| %s", powder_exists);
 
-    mvwprintw(win, 9, 2, "커피 예약 시간");
-    mvwprintw(win, 9, COL_SEP_MAIN, "| %s", coffee_time);
+    mvwprintw(win, 9, 2, "커피 가루 청소 필요");
+    mvwprintw(win, 9, COL_SEP_MAIN, "| %s", needs_cleaning);
 
-    mvwprintw(win, 10, 2, "청소 예약시간");
-    mvwprintw(win, 10, COL_SEP_MAIN, "| %s", clean_time);
+    mvwprintw(win, 10, 2, "커피 예약 시간");
+    mvwprintw(win, 10, COL_SEP_MAIN, "| %s", coffee_time);
+
+    mvwprintw(win, 11, 2, "청소 예약시간");
+    mvwprintw(win, 11, COL_SEP_MAIN, "| %s", clean_time);
 
     wrefresh(win);
 }
 
 void draw_select_supply_type(WINDOW *win, const char *buf) {
-    wresize(win, 9, 20);
+    wresize(win, 10, 20);
     werase(win);
     box(win, '|', '-');
     
@@ -70,10 +75,13 @@ void draw_select_supply_type(WINDOW *win, const char *buf) {
     mvwprintw(win, 4, COL_SEP_SUPPLY, "| %s", "커피 가루");
 
     mvwprintw(win, 5, 2, "3");
-    mvwprintw(win, 5, COL_SEP_SUPPLY, "| %s", "물");
+    mvwprintw(win, 5, COL_SEP_SUPPLY, "| %s", "물(온)");
 
-    mvwprintw(win, 6, 1, "------------------");
-    mvwprintw(win, 7, 2, "Input> %s", buf);
+    mvwprintw(win, 6, 2, "4");
+    mvwprintw(win, 6, COL_SEP_SUPPLY, "| %s", "물(냉)");
+
+    mvwprintw(win, 7, 1, "------------------");
+    mvwprintw(win, 8, 2, "Input> %s", buf);
 
     wrefresh(win);
 }

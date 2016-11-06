@@ -1,7 +1,7 @@
 #pragma once
 #include <curses.h>
 
-void draw_main(WINDOW *win, const char *current_time, const char *current_state, const char *concentration, const char *temperature, const char *water_remains, const char *coffee_remains, const char *powder_exists, const char *needs_cleaning, const char *coffee_time, const char *clean_time);
+void draw_main(WINDOW *win, const char *current_time, const char *current_state, const char *concentration, const char *temperature, const char *cold_water_remains, const char *hot_water_remains, const char *coffee_remains, const char *powder_exists, const char *needs_cleaning, const char *coffee_time, const char *clean_time);
 void draw_select_supply_type(WINDOW *win, const char *buf);
 void draw_select_supply_amount(WINDOW *win, const char *type, const char *buf);
 void draw_select_time(WINDOW *win, const char *buf);
@@ -13,3 +13,4 @@ int feedback_fini();
 
 extern WINDOW *win;
 extern WINDOW *win_commands;
+extern char *error_msg;
