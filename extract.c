@@ -45,7 +45,9 @@ void extract_tick(int now_state) {
                         if(mysleep(&timer, 2)) {
                                 new_state(STATE_WAIT);
                                 error_msg = NULL;
+				werase(stdscr);
                         } else {
+				if(!error_msg) werase(stdscr);
                                 error_msg = "물(온)이 부족합니다.";
                         }
 					}
@@ -65,7 +67,9 @@ void extract_tick(int now_state) {
 						if(mysleep(&timer, 2)) {
                                 new_state(STATE_WAIT);
                                 error_msg = NULL;
+				werase(stdscr);
                         } else {
+				if(!error_msg) werase(stdscr);
                                 error_msg = "물(냉)이 부족합니다.";
                         }
 					}

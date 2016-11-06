@@ -30,6 +30,7 @@ void grind_tick(int now_state)
 			} else {
 				error_msg = "원두가 부족합니다.";
 			}
+			werase(stdscr);
 		}
 		else if(sensor_get(&sensor_coffee_bean_weight) >= 10)
 		{
