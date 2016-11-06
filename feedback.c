@@ -106,6 +106,8 @@ void draw_select_supply_amount(WINDOW *win, const char *type, const char *buf) {
     wrefresh(win);
 }
 
+
+
 void draw_select_time(WINDOW *win, const char *buf) {
     wresize(win, 5, 20);
     werase(win);

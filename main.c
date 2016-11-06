@@ -75,10 +75,10 @@ int main() {
 
 	int timer = -1;
 
-        feedback_init();
+    feedback_init();
 
 	while (1) {
-                print_state();
+        print_state();
 		btns_update();
 
 		if(power_flag){

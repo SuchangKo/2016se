@@ -26,6 +26,7 @@ extern int state;
 extern int concentration;
 extern int supply_type;
 extern int supply_amount;
+extern int reserve_action;
 
 void state_process();
 

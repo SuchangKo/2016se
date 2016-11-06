@@ -36,19 +36,23 @@ void extract_tick(int now_state) {
 							sensor_sub(&sensor_hot_weight,(concentration+1)*100);
 							sensor_sub(&sensor_coffee_powder_weight,10);
 							sensor_add(&sensor_use_count,1);
+							return;
 						}
-						
-						
-						
 					}
 					if(sensor_get(&sensor_hot_weight) < 300 || sensor_get(&sensor_cup_existence) == false || Count >= 10){
                         if(mysleep(&timer, 2)) {
                                 new_state(STATE_WAIT);
                                 error_msg = NULL;
-				werase(stdscr);
+								werase(stdscr);
                         } else {
-				if(!error_msg) werase(stdscr);
-                                error_msg = "물(온)이 부족합니다.";
+								if(!error_msg) werase(stdscr);
+								if(sensor_get(&sensor_hot_weight) < 300){
+									error_msg = "물(온)이 부족합니다.";
+								}else if(sensor_get(&sensor_cup_existence) == false){
+									error_msg = "컵이 부족합니다.";
+								}else if(Count >= 10){
+									error_msg = "청소가 필요합니다.";
+								}
                         }
 					}
 				}else{ //Cold
@@ -60,6 +64,7 @@ void extract_tick(int now_state) {
 							sensor_sub(&sensor_cold_weight,(concentration+1)*100);
 							sensor_sub(&sensor_coffee_powder_weight,10);
 							sensor_add(&sensor_use_count,1);
+							return;
 						}
 							
 					}
@@ -67,10 +72,17 @@ void extract_tick(int now_state) {
 						if(mysleep(&timer, 2)) {
                                 new_state(STATE_WAIT);
                                 error_msg = NULL;
-				werase(stdscr);
+								werase(stdscr);
                         } else {
-				if(!error_msg) werase(stdscr);
-                                error_msg = "물(냉)이 부족합니다.";
+								if(!error_msg) werase(stdscr);
+								if(sensor_get(&sensor_cold_weight) < 300){
+									error_msg = "물(냉)이 부족합니다.";
+								}else if(sensor_get(&sensor_cup_existence) == false){
+									error_msg = "컵이 부족합니다.";
+								}else if(Count >= 10){
+									error_msg = "청소가 필요합니다.";
+								}
+                                
                         }
 					}
 

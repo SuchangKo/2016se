@@ -5,19 +5,24 @@
 #include "sensor.h"
 #include "stringlib.h"
 #include <time.h>
-extern char input_buf[];
+#include "reservation.h"
+#include <string.h>
+#include "time.h"
 
+extern char input_buf[];
+extern int reserve_action;
 const char *SUPPLY_TYPES[] = {"원두", "커피 가루", "물(온)", "물(냉)"};
 const char *STATE_TYPES[] = {"대기중", "분쇄중", "추출중", "예약중", "청소중", "보충중","예약됨"};
-const char *CONCENTRATION_TYPES[] = {"진하게","중간","연하게"};
+const char *CONCENTRATION_TYPES[] = {"연하게","중간","진하게"};
 const char *TEMP_TYPES[] = {"온","냉"};
 int supply_type;
 int supply_amount;
-
+int error_timer = -1;
 void print_state(){
 	if(error_msg) {
 		draw_warning(win, error_msg, 0);
-		return;
+        
+        return;
 	}
 
         switch(state){
@@ -43,13 +48,31 @@ void print_state(){
             }else{
                 clean_flag[0] = 'O';
             }
-            draw_main(win, scat(scat(itoa(timeinfo->tm_hour,10),":"),itoa(timeinfo->tm_min,10)), STATE_TYPES[state], CONCENTRATION_TYPES[concentration], TEMP_TYPES[temp_flag], scat(itoa(sensor_get(&sensor_cold_weight),10),"ml"),scat(itoa(sensor_get(&sensor_hot_weight),10),"ml"), scat(itoa(sensor_get(&sensor_coffee_bean_weight),10),"g"), powder_flag, clean_flag, "12:19", "--:--");
+
+            FILE *f;
+            char reserve_clean_time[20] = {0};
+            char reserve_extract_time[20] = {0};
+            int flag;
+            f=fopen("reserve_history.txt", "rb");
+            if(f == NULL) return;
+            while(!feof(f)){
+                char buf[20] = {0};
+                fscanf(f, "%d %s\n", &flag,buf);
+                if(flag == CLEAN){
+                    strcpy(reserve_clean_time,buf);
+                }else{
+                    strcpy(reserve_extract_time,buf);
+                }
+            }
+            fclose(f);
+
+            draw_main(win, NULL, STATE_TYPES[state], CONCENTRATION_TYPES[concentration], TEMP_TYPES[temp_flag], scat(itoa(sensor_get(&sensor_cold_weight),10),"ml"),scat(itoa(sensor_get(&sensor_hot_weight),10),"ml"), scat(itoa(sensor_get(&sensor_coffee_bean_weight),10),"g"), powder_flag, clean_flag, reserve_extract_time, reserve_clean_time);
             mvwin(win_commands, getbegy(win) + getmaxy(win), 0);
             draw_commands(win_commands);
             break;
         }
         case STATE_RESERVE:{
-        
+            draw_select_time(stdscr,input_buf);
             break;
         }
         case STATE_SUPPLY:{
@@ -66,11 +89,10 @@ void print_state(){
     }
 
     if(power_flag) {
-            mvwprintw(stdscr, 50, 0, "[Working]");
-
-        } else {
-            mvwprintw(stdscr, 50, 0, "[Not Working]");
-        }
+        mvwprintw(stdscr, 50, 0, "[Working]");
+    } else {
+        mvwprintw(stdscr, 50, 0, "[Not Working]");
+    }
 
         wrefresh(stdscr);
 }
@@ -94,21 +116,30 @@ void state_process(){
         concentration++;
         concentration = concentration%3;
     }else if(btn_is_pressed(&btn_reservation_clean)){
-                if(state == STATE_WAIT)
+            if(state == STATE_WAIT){
                 new_state(STATE_RESERVE);
+                reserve_action = CLEAN;
+            }
 
         btn_release(&btn_reservation_clean);
     }else if(btn_is_pressed(&btn_reservation_extract)){
-        if(state == STATE_WAIT)
-                    new_state(STATE_RESERVE);
+        if(state == STATE_WAIT){
+            new_state(STATE_RESERVE);
+            reserve_action = MK_COFFEE; 
+        }
         btn_release(&btn_reservation_extract);
     }else if(btn_is_pressed(&btn_reservation_cancel)){
-                if(state == STATE_WAIT)
+        if(state == STATE_WAIT){
             new_state(STATE_RESERVE);
+            reserve_action = CLEAN;
+        }
         btn_release(&btn_reservation_cancel);
+         
     }else if(btn_is_pressed(&btn_clean)){
         new_state(STATE_CLEAN);
         btn_release(&btn_clean);
+        
+
     }else if(btn_is_pressed(&btn_onoff)){
         power_flag = !power_flag;
         btn_release(&btn_onoff);

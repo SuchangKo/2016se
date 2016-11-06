@@ -1,5 +1,6 @@
 #include "stringlib.h"
 #include <string.h>
+#include <stdio.h>
 #include <stdlib.h>
 
 char *scat(char *s,char *t)
@@ -22,13 +23,17 @@ char *scat(char *s,char *t)
 char* itoa(int val, int base){
     
     static char buf[32] = {0};
-    
+    sprintf(buf, "%d", val);
+    /*
     int i = 30;
     
-    for(; val && i ; --i, val /= base)
-    
-        buf[i] = "0123456789abcdef"[val % base];
-    
+    for(; val && i ; --i, val /= base){
+    	buf[i] = "00123456789abcdef"[val % base];
+    }
+    printf("[print]%s\n", &buf[i+1]);
+
     return &buf[i+1];
+    */
+    return buf;
     
 }

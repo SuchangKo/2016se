@@ -27,10 +27,11 @@ void grind_tick(int now_state)
 			if(mysleep(&grind_timer, 1)) {
 				new_state(STATE_WAIT);
 				error_msg = NULL;
+				werase(stdscr);
 			} else {
+				if(!error_msg) werase(stdscr);
 				error_msg = "원두가 부족합니다.";
 			}
-			werase(stdscr);
 		}
 		else if(sensor_get(&sensor_coffee_bean_weight) >= 10)
 		{

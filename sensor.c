@@ -12,6 +12,7 @@ int sensor_get(struct sensor_ctx *c){
         if(f == NULL) return 0;
 	fscanf(f, "%d", &ret);
 	fclose(f);
+	
 	return ret;
 }
 
@@ -53,6 +54,12 @@ int sensor_sub(struct sensor_ctx *c, int amount){
 void sensor_init(struct sensor_ctx *c, char *filename, int min, int max){
 	//min = =0x80000000;
 	//max = =0x7fffffff;
+	if( access( filename, F_OK ) == -1 ) { // file doesn't exist
+    	FILE *fp;
+    	fp = fopen(filename,"wb+");
+    	fprintf(fp, "%d\n",min );
+    	fclose(fp);
+	}
 	strcpy(c->filename, filename);
 	c->min=min;
 	c->max=max;
