@@ -66,7 +66,7 @@ void print_state(){
             }
             fclose(f);
 
-            draw_main(win, NULL, STATE_TYPES[state], CONCENTRATION_TYPES[concentration], TEMP_TYPES[temp_flag], scat(itoa(sensor_get(&sensor_cold_weight),10),"ml"),scat(itoa(sensor_get(&sensor_hot_weight),10),"ml"), scat(itoa(sensor_get(&sensor_coffee_bean_weight),10),"g"), powder_flag, clean_flag, reserve_extract_time, reserve_clean_time);
+            draw_main(win, NULL, STATE_TYPES[state], CONCENTRATION_TYPES[concentration], TEMP_TYPES[temp_flag], scat(itoa_c(sensor_get(&sensor_cold_weight),10),"ml"),scat(itoa_c(sensor_get(&sensor_hot_weight),10),"ml"), scat(itoa_c(sensor_get(&sensor_coffee_bean_weight),10),"g"), powder_flag, clean_flag, reserve_extract_time, reserve_clean_time);
             mvwin(win_commands, getbegy(win) + getmaxy(win), 0);
             draw_commands(win_commands);
             break;

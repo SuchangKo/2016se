@@ -20,7 +20,7 @@ char *scat(char *s,char *t)
 	return p;
 }
 
-char* itoa(int val, int base){
+char* itoa_c(int val, int base){
     
     static char buf[32] = {0};
     sprintf(buf, "%d", val);
