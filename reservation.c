@@ -5,6 +5,7 @@
 #include <string.h>
 #include "time.h"
 
+
 extern char input_buf[];
 int reserve_action;
 int reserve_timer = -1;
@@ -51,7 +52,8 @@ void reserve_tick(int now_state){
                 reserve_change(reserve_action,input_buf);
             }
             input_buf[0] = '\0';
-            werase(stdscr);
+            werase(win);
+            wrefresh(win);
             new_state(STATE_RESERVED);
         }else{
             if(reserve_action == CANCEL){

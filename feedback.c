@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <time.h>
 #include <string.h>
+#include <stdlib.h>
 
 #define COL_SEP_MAIN 25
 #define COL_SEP_SUPPLY 4
@@ -109,6 +110,7 @@ void draw_select_supply_amount(WINDOW *win, const char *type, const char *buf) {
 
 
 void draw_select_time(WINDOW *win, const char *buf) {
+    
     wresize(win, 5, 20);
     werase(win);
     box(win, '|', '-');

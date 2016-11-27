@@ -18,6 +18,7 @@ const char *TEMP_TYPES[] = {"온","냉"};
 int supply_type;
 int supply_amount;
 int error_timer = -1;
+int old_state = 0;
 void print_state(){
 	if(error_msg) {
 		draw_warning(win, error_msg, 0);
@@ -72,8 +73,14 @@ void print_state(){
             break;
         }
         case STATE_RESERVE:{
-            if(reserve_action != CANCEL)
+            if(state != old_state){
+                wresize(win, 80, 80);
+                werase(win);
+                wrefresh(win);
+            }
+            if(reserve_action != CANCEL){
                 draw_select_time(stdscr,input_buf);
+            }
             break;
         }
         case STATE_SUPPLY:{
@@ -96,6 +103,7 @@ void print_state(){
     }
 
         wrefresh(stdscr);
+        old_state = state;
 }
 
 void state_process(){
