@@ -14,7 +14,7 @@ extern char input_buf[];
 extern int reserve_action;
 const char *SUPPLY_TYPES[] = {"원두", "커피 가루", "물(온)", "물(냉)"};
 const char *STATE_TYPES[] = {"대기중", "분쇄중", "추출중", "예약중", "청소중", "보충중","예약됨"};
-const char *CONCENTRATION_TYPES[] = {"연하게","중간","진하게"};
+const char *CONCENTRATION_TYPES[] = {"진하게","중간","연하게"};
 const char *TEMP_TYPES[] = {"온","냉"};
 int supply_type;
 int supply_amount;
@@ -100,7 +100,7 @@ void print_state(){
     if(power_flag) {
         mvwprintw(stdscr, 50, 0, "[Working]");
     } else {
-        exit(0);
+        
         mvwprintw(stdscr, 50, 0, "[Not Working]");
     }
 
