@@ -44,12 +44,23 @@ void reserve_tick(int now_state){
 	if(now_state == STATE_RESERVE)
 	{
 		if(input_buf[strlen(input_buf) - 1] == '\n') {
-            reserve_change(reserve_action,input_buf);
+            if(reserve_action == CANCEL){
+                reserve_change(reserve_action,"--:--");
+                reserve_change(reserve_action,"--:--");
+            }else{
+                reserve_change(reserve_action,input_buf);
+            }
             input_buf[0] = '\0';
             werase(stdscr);
             new_state(STATE_RESERVED);
-            
-        }		
+        }else{
+            if(reserve_action == CANCEL){
+                reserve_change(CLEAN,"--:--");
+                reserve_change(MK_COFFEE,"--:--");
+                werase(stdscr);
+                new_state(STATE_RESERVED);
+            }
+        }
 	}
     if(now_state == STATE_RESERVED){
         if(mysleep(&reserve_timer, 3)) {

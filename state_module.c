@@ -72,7 +72,8 @@ void print_state(){
             break;
         }
         case STATE_RESERVE:{
-            draw_select_time(stdscr,input_buf);
+            if(reserve_action != CANCEL)
+                draw_select_time(stdscr,input_buf);
             break;
         }
         case STATE_SUPPLY:{
@@ -131,7 +132,7 @@ void state_process(){
     }else if(btn_is_pressed(&btn_reservation_cancel)){
         if(state == STATE_WAIT){
             new_state(STATE_RESERVE);
-            reserve_action = CLEAN;
+            reserve_action = CANCEL;
         }
         btn_release(&btn_reservation_cancel);
          
