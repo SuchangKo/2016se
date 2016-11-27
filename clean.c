@@ -9,12 +9,12 @@ void clean_tick(int now_state)
 {
 	if(now_state == STATE_CLEAN){
 		if(sensor_get(&sensor_hot_weight) >= 500){
-			if(mysleep(&clean_timer, 3)) {
+			if(mysleep(&clean_timer, 10)) {
 				sensor_sub(&sensor_hot_weight,500); // 소모되는 물의 양	
 				new_state(STATE_WAIT);
 			}
 		}else if(sensor_get(&sensor_cold_weight) >= 500){
-			if(mysleep(&clean_timer, 3)) {
+			if(mysleep(&clean_timer, 10)) {
 				sensor_sub(&sensor_cold_weight,500); // 소모되는 물의 양	
 				new_state(STATE_WAIT);
 			}

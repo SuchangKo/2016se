@@ -58,7 +58,7 @@ void extract_tick(int now_state) {
 				}else{ //Cold
 					if(sensor_get(&sensor_cold_weight) >= 300 && sensor_get(&sensor_cup_existence) == true && Count < 10){
 						Solenoid_Command(On);
-						if(mysleep(&timer, 3)) {
+						if(mysleep(&timer, 10)) {
 							Solenoid_Command(Off);
 							new_state(STATE_WAIT);
 							sensor_sub(&sensor_cold_weight,(concentration+1)*100);
@@ -69,7 +69,7 @@ void extract_tick(int now_state) {
 							
 					}
 					if(sensor_get(&sensor_cold_weight) < 300 || sensor_get(&sensor_cup_existence) == false || Count >= 10){
-						if(mysleep(&timer, 2)) {
+						if(mysleep(&timer, 10)) {
                                 new_state(STATE_WAIT);
                                 error_msg = NULL;
 								werase(stdscr);

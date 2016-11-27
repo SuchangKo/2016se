@@ -36,7 +36,7 @@ void grind_tick(int now_state)
 		else if(sensor_get(&sensor_coffee_bean_weight) >= 10)
 		{
 			Solenoid_Command(On);
-			if(mysleep(&grind_timer, 3)) {
+			if(mysleep(&grind_timer, 5)) {
 				sensor_sub(&sensor_coffee_bean_weight,10); // 소모되는 원두의 양	
 				sensor_add(&sensor_coffee_powder_weight,10);
 				Solenoid_Command(Off);
