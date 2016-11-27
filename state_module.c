@@ -8,6 +8,7 @@
 #include "reservation.h"
 #include <string.h>
 #include "time.h"
+#include <stdlib.h>
 
 extern char input_buf[];
 extern int reserve_action;
@@ -99,6 +100,7 @@ void print_state(){
     if(power_flag) {
         mvwprintw(stdscr, 50, 0, "[Working]");
     } else {
+        exit(0);
         mvwprintw(stdscr, 50, 0, "[Not Working]");
     }
 

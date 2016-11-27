@@ -51,7 +51,7 @@ int main() {
 	
 	//now_state = 1;
 	btn_init(&btn_temperature, 'm');
-	btn_init(&btn_onoff, 'o');
+	btn_init(&btn_onoff, 'z'); //q <- o
 	btn_init(&btn_extract, 'e');
 	btn_init(&btn_concentration, 'c');
 	btn_init(&btn_supply, 's');
@@ -94,7 +94,7 @@ int main() {
                 char ch = getch();
                 mvwprintw(stdscr, 52, 0, "%d %d", ch, '\b'); // test
 
-                if(ch == 'q') {
+                if(ch == 'q' || ch == 'o') {
                     break;
                 } else if(strchr(allowed_charset, ch)) {
                     int end = strlen(input_buf);
